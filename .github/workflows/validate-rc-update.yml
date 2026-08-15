@@ -76,34 +76,33 @@ jobs:
           exit 1
           }
 
-          echo "RC release verification PASS"
-      
+          echo "RC release verification PASS"      
 
-      - name: Download exact RC package
-        shell: bash
-        run: |
-          set -euo pipefail
+       - name: Download exact RC package
+       shell: bash
+       run: |
+        set -euo pipefail
 
-          mkdir -p rc
+        mkdir -p rc
 
-          ASSET="TACO_Update_${{ inputs.version }}_win-x64.zip"
+        ASSET="TACO_Update_${{ inputs.version }}_win-x64.zip"
 
-          DOWNLOAD_URL="https://github.com/${{ github.repository }}/releases/download/${{ inputs.rc_tag }}/$ASSET"
+        DOWNLOAD_URL="https://github.com/${{ github.repository }}/releases/download/${{ inputs.rc_tag }}/$ASSET"
 
-          curl \
-            --fail \
-            --location \
-            --retry 3 \
-            --retry-delay 2 \
-            --output "rc/$ASSET" \
-            "$DOWNLOAD_URL"
+        curl \
+        --fail \
+        --location \
+        --retry 3 \
+        --retry-delay 2 \
+        --output "rc/$ASSET" \
+        "$DOWNLOAD_URL"
 
-          test -s "rc/$ASSET"
+        test -s "rc/$ASSET"
 
-          echo "Downloaded:"
-          ls -lh "rc/$ASSET"
+        echo "Downloaded:"
+        ls -lh "rc/$ASSET"
 
-          echo "ASSET=$ASSET" >> "$GITHUB_ENV"
+        echo "ASSET=$ASSET" >> "$GITHUB_ENV"
 
       - name: Validate ZIP structure and reject secrets
         shell: bash
