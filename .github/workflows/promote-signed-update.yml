@@ -8,7 +8,7 @@ on:
         required: true
         type: string
       rc_tag:
-        description: "已上傳未簽章更新 ZIP 的 RC Release tag，例如 rc-6.11.0"
+        description: "已通過 RC Validation 的 prerelease tag，例如 rc-6.11.0"
         required: true
         type: string
       channel:
@@ -50,42 +50,79 @@ concurrency:
 
 jobs:
   promote:
-    name: Verify RC, sign manifest, publish release
+    name: Verify validated RC, sign manifest, publish release
     runs-on: ubuntu-latest
     environment: production
     env:
       GH_TOKEN: ${{ github.token }}
       UPDATE_PRIVATE_KEY_B64: ${{ secrets.TACO_UPDATE_PRIVATE_KEY_B64 }}
+      INPUT_VERSION: ${{ inputs.version }}
+      INPUT_RC_TAG: ${{ inputs.rc_tag }}
+      INPUT_CHANNEL: ${{ inputs.channel }}
+      INPUT_MIN_VERSION: ${{ inputs.min_version }}
+      INPUT_SCHEMA_VERSION: ${{ inputs.schema_version }}
+      INPUT_MANDATORY: ${{ inputs.mandatory }}
+      INPUT_RELEASE_NOTES: ${{ inputs.release_notes }}
     steps:
-      - name: Validate inputs and secret
+      - name: Validate inputs and production secret
         shell: bash
         run: |
           set -euo pipefail
-          [[ "${{ inputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Invalid version"; exit 1; }
-          [[ "${{ inputs.min_version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Invalid min_version"; exit 1; }
-          [[ "${{ inputs.schema_version }}" =~ ^[0-9]+$ ]] || { echo "Invalid schema_version"; exit 1; }
+          [[ "$INPUT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Invalid version"; exit 1; }
+          [[ "$INPUT_RC_TAG" =~ ^rc-[0-9]+\.[0-9]+\.[0-9]+([.-][A-Za-z0-9_-]+)?$ ]] || { echo "Invalid rc_tag"; exit 1; }
+          [[ "$INPUT_MIN_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Invalid min_version"; exit 1; }
+          [[ "$INPUT_SCHEMA_VERSION" =~ ^[0-9]+$ ]] || { echo "Invalid schema_version"; exit 1; }
           test -n "$UPDATE_PRIVATE_KEY_B64" || { echo "Missing production environment secret TACO_UPDATE_PRIVATE_KEY_B64"; exit 1; }
 
-      - name: Download exact RC package
+      - name: Verify RC release is published prerelease
+        shell: bash
+        run: |
+          set -euo pipefail
+          JSON=$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${INPUT_RC_TAG}")
+          PRERELEASE=$(printf '%s' "$JSON" | jq -r '.prerelease')
+          DRAFT=$(printf '%s' "$JSON" | jq -r '.draft')
+          test "$PRERELEASE" = "true" || { echo "RC release must be marked prerelease"; exit 1; }
+          test "$DRAFT" = "false" || { echo "RC release must be published, not draft"; exit 1; }
+
+      - name: Download RC package and validation evidence
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p release
-          ASSET="TACO_Update_${{ inputs.version }}_win-x64.zip"
-          gh release download "${{ inputs.rc_tag }}" \
-            --repo "${{ github.repository }}" \
-            --pattern "$ASSET" \
-            --dir release
+          ASSET="TACO_Update_${INPUT_VERSION}_win-x64.zip"
+          REPORT="RC_VALIDATION_${INPUT_VERSION}.txt"
+          RC_CHECKSUM="CHECKSUMS_RC_${INPUT_VERSION}_SHA256.txt"
+          gh release download "$INPUT_RC_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$ASSET" --dir release
+          gh release download "$INPUT_RC_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$REPORT" --dir release
+          gh release download "$INPUT_RC_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$RC_CHECKSUM" --dir release
           test -s "release/$ASSET"
+          test -s "release/$REPORT"
+          test -s "release/$RC_CHECKSUM"
           echo "ASSET=$ASSET" >> "$GITHUB_ENV"
+          echo "REPORT=$REPORT" >> "$GITHUB_ENV"
+          echo "RC_CHECKSUM=$RC_CHECKSUM" >> "$GITHUB_ENV"
 
-      - name: Calculate package SHA-256
+      - name: Verify RC validation evidence and package hash
         shell: bash
         run: |
           set -euo pipefail
-          HASH=$(sha256sum "release/$ASSET" | awk '{print $1}')
-          echo "PACKAGE_SHA256=$HASH" >> "$GITHUB_ENV"
-          echo "$HASH  $ASSET" > release/CHECKSUMS_SHA256.txt
+          grep -Fxq "version=$INPUT_VERSION" "release/$REPORT"
+          grep -Fxq "rc_tag=$INPUT_RC_TAG" "release/$REPORT"
+          grep -Fxq "package=$ASSET" "release/$REPORT"
+          grep -Fxq "zip_crc=PASS" "release/$REPORT"
+          grep -Fxq "path_traversal_check=PASS" "release/$REPORT"
+          grep -Fxq "secret_material_check=PASS" "release/$REPORT"
+          grep -Fxq "windows_executable_check=PASS" "release/$REPORT"
+          grep -Fxq "result=PASS" "release/$REPORT"
+          EXPECTED=$(awk -v a="$ASSET" '$2==a {print $1}' "release/$RC_CHECKSUM")
+          test -n "$EXPECTED" || { echo "RC checksum evidence does not contain expected asset"; exit 1; }
+          ACTUAL=$(sha256sum "release/$ASSET" | awk '{print $1}')
+          test "$ACTUAL" = "$EXPECTED" || { echo "RC package hash changed after validation"; exit 1; }
+          REPORT_HASH=$(awk -F= '$1=="sha256" {print $2}' "release/$REPORT" | tr -d '\r')
+          test "$ACTUAL" = "$REPORT_HASH" || { echo "RC report hash mismatch"; exit 1; }
+          echo "PACKAGE_SHA256=$ACTUAL" >> "$GITHUB_ENV"
+          echo "$ACTUAL  $ASSET" > release/CHECKSUMS_SHA256.txt
+          echo "Validated RC evidence PASS"
 
       - name: Install signing dependency
         shell: bash
@@ -100,44 +137,41 @@ jobs:
           from datetime import datetime, timezone
           from cryptography.hazmat.primitives import serialization
 
-          version = "${{ inputs.version }}"
-          channel = "${{ inputs.channel }}"
-          mandatory = "${{ inputs.mandatory }}".lower() == "true"
-          owner_repo = os.environ["GITHUB_REPOSITORY"]
-          asset = os.environ["ASSET"]
-          download_url = f"https://github.com/{owner_repo}/releases/download/v{version}/{asset}"
-
+          version = os.environ['INPUT_VERSION']
+          owner_repo = os.environ['GITHUB_REPOSITORY']
+          asset = os.environ['ASSET']
+          mandatory = os.environ['INPUT_MANDATORY'].lower() == 'true'
           payload = {
-              "app": "TACO Smart Procurement",
-              "version": version,
-              "channel": channel,
-              "min_version": "${{ inputs.min_version }}",
-              "schema_version": int("${{ inputs.schema_version }}"),
-              "mandatory": mandatory,
-              "published_at": datetime.now(timezone.utc).isoformat().replace('+00:00','Z'),
-              "download_url": download_url,
-              "sha256": os.environ["PACKAGE_SHA256"],
-              "release_notes": "${{ inputs.release_notes }}",
+              'app': 'TACO Smart Procurement',
+              'version': version,
+              'channel': os.environ['INPUT_CHANNEL'],
+              'min_version': os.environ['INPUT_MIN_VERSION'],
+              'schema_version': int(os.environ['INPUT_SCHEMA_VERSION']),
+              'mandatory': mandatory,
+              'published_at': datetime.now(timezone.utc).isoformat().replace('+00:00','Z'),
+              'download_url': f'https://github.com/{owner_repo}/releases/download/v{version}/{asset}',
+              'sha256': os.environ['PACKAGE_SHA256'],
+              'release_notes': os.environ['INPUT_RELEASE_NOTES'],
           }
-          canonical = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
-          pem = base64.b64decode(os.environ["UPDATE_PRIVATE_KEY_B64"])
+          canonical = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode('utf-8')
+          pem = base64.b64decode(os.environ['UPDATE_PRIVATE_KEY_B64'], validate=True)
           key = serialization.load_pem_private_key(pem, password=None)
           signature = key.sign(canonical)
           manifest = dict(payload)
-          manifest["signature_alg"] = "Ed25519"
-          manifest["signature"] = base64.b64encode(signature).decode("ascii")
-          with open("release/update.json", "w", encoding="utf-8") as f:
+          manifest['signature_alg'] = 'Ed25519'
+          manifest['signature'] = base64.b64encode(signature).decode('ascii')
+          with open('release/update.json', 'w', encoding='utf-8') as f:
               json.dump(manifest, f, ensure_ascii=False, indent=2)
-              f.write("\n")
-          print("Manifest created; private key was not written to disk.")
+              f.write('\n')
+          print('Manifest created; private key was never written to disk.')
           PY
 
       - name: Refuse duplicate production tag
         shell: bash
         run: |
           set -euo pipefail
-          if gh release view "v${{ inputs.version }}" --repo "${{ github.repository }}" >/dev/null 2>&1; then
-            echo "Production release v${{ inputs.version }} already exists. Refusing overwrite."
+          if gh release view "v$INPUT_VERSION" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Production release v$INPUT_VERSION already exists. Refusing overwrite."
             exit 1
           fi
 
@@ -145,23 +179,38 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          gh release create "v${{ inputs.version }}" \
+          gh release create "v$INPUT_VERSION" \
             "release/$ASSET" \
             release/update.json \
             release/CHECKSUMS_SHA256.txt \
-            --repo "${{ github.repository }}" \
-            --title "TACO ${{ inputs.version }}" \
-            --notes "${{ inputs.release_notes }}" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "TACO $INPUT_VERSION" \
+            --notes "$INPUT_RELEASE_NOTES" \
             --latest
 
       - name: Verify public latest assets
         shell: bash
         run: |
           set -euo pipefail
-          BASE="https://github.com/${{ github.repository }}/releases/latest/download"
+          BASE="https://github.com/${GITHUB_REPOSITORY}/releases/latest/download"
           curl -fL --retry 3 "$BASE/update.json" -o /tmp/update.json
-          curl -fL --retry 3 "$BASE/$ASSET" -o /tmp/$ASSET
+          curl -fL --retry 3 "$BASE/$ASSET" -o "/tmp/$ASSET"
           ACTUAL=$(sha256sum "/tmp/$ASSET" | awk '{print $1}')
           test "$ACTUAL" = "$PACKAGE_SHA256"
           python -m json.tool /tmp/update.json >/dev/null
           echo "Production release public verification PASS"
+
+      - name: Write production summary
+        shell: bash
+        run: |
+          {
+            echo '## TACO Production Promotion PASS'
+            echo ''
+            echo "- Version: $INPUT_VERSION"
+            echo "- Source RC: $INPUT_RC_TAG"
+            echo "- Package: $ASSET"
+            echo "- SHA-256: \`$PACKAGE_SHA256\`"
+            echo '- RC validation evidence: PASS'
+            echo '- Ed25519 manifest signing: PASS'
+            echo '- Public latest asset verification: PASS'
+          } >> "$GITHUB_STEP_SUMMARY"
