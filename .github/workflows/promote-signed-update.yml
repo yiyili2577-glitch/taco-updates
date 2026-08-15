@@ -1,0 +1,167 @@
+name: TACO Secure Signed Update Promotion
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "版本，例如 6.11.0"
+        required: true
+        type: string
+      rc_tag:
+        description: "已上傳未簽章更新 ZIP 的 RC Release tag，例如 rc-6.11.0"
+        required: true
+        type: string
+      channel:
+        description: "更新通道"
+        required: true
+        default: "stable"
+        type: choice
+        options:
+          - stable
+          - beta
+          - internal
+      min_version:
+        description: "允許直接升級的最低版本，例如 6.9.0"
+        required: true
+        default: "6.9.0"
+        type: string
+      schema_version:
+        description: "目標 Schema 版本"
+        required: true
+        default: "5"
+        type: string
+      mandatory:
+        description: "是否強制更新"
+        required: true
+        default: false
+        type: boolean
+      release_notes:
+        description: "單行更新摘要"
+        required: false
+        default: "TACO signed update"
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: taco-production-release
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    name: Verify RC, sign manifest, publish release
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      GH_TOKEN: ${{ github.token }}
+      UPDATE_PRIVATE_KEY_B64: ${{ secrets.TACO_UPDATE_PRIVATE_KEY_B64 }}
+    steps:
+      - name: Validate inputs and secret
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "${{ inputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Invalid version"; exit 1; }
+          [[ "${{ inputs.min_version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Invalid min_version"; exit 1; }
+          [[ "${{ inputs.schema_version }}" =~ ^[0-9]+$ ]] || { echo "Invalid schema_version"; exit 1; }
+          test -n "$UPDATE_PRIVATE_KEY_B64" || { echo "Missing production environment secret TACO_UPDATE_PRIVATE_KEY_B64"; exit 1; }
+
+      - name: Download exact RC package
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release
+          ASSET="TACO_Update_${{ inputs.version }}_win-x64.zip"
+          gh release download "${{ inputs.rc_tag }}" \
+            --repo "${{ github.repository }}" \
+            --pattern "$ASSET" \
+            --dir release
+          test -s "release/$ASSET"
+          echo "ASSET=$ASSET" >> "$GITHUB_ENV"
+
+      - name: Calculate package SHA-256
+        shell: bash
+        run: |
+          set -euo pipefail
+          HASH=$(sha256sum "release/$ASSET" | awk '{print $1}')
+          echo "PACKAGE_SHA256=$HASH" >> "$GITHUB_ENV"
+          echo "$HASH  $ASSET" > release/CHECKSUMS_SHA256.txt
+
+      - name: Install signing dependency
+        shell: bash
+        run: python -m pip install --disable-pip-version-check --no-cache-dir 'cryptography>=43,<47'
+
+      - name: Create and Ed25519-sign canonical manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, json, base64
+          from datetime import datetime, timezone
+          from cryptography.hazmat.primitives import serialization
+
+          version = "${{ inputs.version }}"
+          channel = "${{ inputs.channel }}"
+          mandatory = "${{ inputs.mandatory }}".lower() == "true"
+          owner_repo = os.environ["GITHUB_REPOSITORY"]
+          asset = os.environ["ASSET"]
+          download_url = f"https://github.com/{owner_repo}/releases/download/v{version}/{asset}"
+
+          payload = {
+              "app": "TACO Smart Procurement",
+              "version": version,
+              "channel": channel,
+              "min_version": "${{ inputs.min_version }}",
+              "schema_version": int("${{ inputs.schema_version }}"),
+              "mandatory": mandatory,
+              "published_at": datetime.now(timezone.utc).isoformat().replace('+00:00','Z'),
+              "download_url": download_url,
+              "sha256": os.environ["PACKAGE_SHA256"],
+              "release_notes": "${{ inputs.release_notes }}",
+          }
+          canonical = json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+          pem = base64.b64decode(os.environ["UPDATE_PRIVATE_KEY_B64"])
+          key = serialization.load_pem_private_key(pem, password=None)
+          signature = key.sign(canonical)
+          manifest = dict(payload)
+          manifest["signature_alg"] = "Ed25519"
+          manifest["signature"] = base64.b64encode(signature).decode("ascii")
+          with open("release/update.json", "w", encoding="utf-8") as f:
+              json.dump(manifest, f, ensure_ascii=False, indent=2)
+              f.write("\n")
+          print("Manifest created; private key was not written to disk.")
+          PY
+
+      - name: Refuse duplicate production tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "v${{ inputs.version }}" --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            echo "Production release v${{ inputs.version }} already exists. Refusing overwrite."
+            exit 1
+          fi
+
+      - name: Publish production release
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release create "v${{ inputs.version }}" \
+            "release/$ASSET" \
+            release/update.json \
+            release/CHECKSUMS_SHA256.txt \
+            --repo "${{ github.repository }}" \
+            --title "TACO ${{ inputs.version }}" \
+            --notes "${{ inputs.release_notes }}" \
+            --latest
+
+      - name: Verify public latest assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="https://github.com/${{ github.repository }}/releases/latest/download"
+          curl -fL --retry 3 "$BASE/update.json" -o /tmp/update.json
+          curl -fL --retry 3 "$BASE/$ASSET" -o /tmp/$ASSET
+          ACTUAL=$(sha256sum "/tmp/$ASSET" | awk '{print $1}')
+          test "$ACTUAL" = "$PACKAGE_SHA256"
+          python -m json.tool /tmp/update.json >/dev/null
+          echo "Production release public verification PASS"
