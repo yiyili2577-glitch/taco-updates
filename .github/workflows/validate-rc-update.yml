@@ -34,14 +34,40 @@ jobs:
           [[ "${{ inputs.rc_tag }}" =~ ^rc-[0-9]+\.[0-9]+\.[0-9]+([.-][A-Za-z0-9_-]+)?$ ]] || { echo "Invalid rc_tag"; exit 1; }
 
       - name: Verify RC release exists and is prerelease
-        shell: bash
-        run: |
-          set -euo pipefail
-          JSON=$(gh api "repos/${{ github.repository }}/releases/tags/${{ inputs.rc_tag }}")
-          PRERELEASE=$(printf '%s' "$JSON" | jq -r '.prerelease')
-          DRAFT=$(printf '%s' "$JSON" | jq -r '.draft')
-          test "$PRERELEASE" = "true" || { echo "RC release must be marked as prerelease"; exit 1; }
-          test "$DRAFT" = "false" || { echo "RC release must be published, not draft"; exit 1; }
+  shell: bash
+  run: |
+    set -euo pipefail
+
+    API_URL="https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ inputs.rc_tag }}"
+
+    JSON=$(curl \
+      --fail \
+      --silent \
+      --show-error \
+      --location \
+      -H "Accept: application/vnd.github+json" \
+      "$API_URL")
+
+    PRERELEASE=$(printf '%s' "$JSON" | jq -r '.prerelease')
+    DRAFT=$(printf '%s' "$JSON" | jq -r '.draft')
+    TAG=$(printf '%s' "$JSON" | jq -r '.tag_name')
+
+    test "$TAG" = "${{ inputs.rc_tag }}" || {
+      echo "RC tag mismatch"
+      exit 1
+    }
+
+    test "$PRERELEASE" = "true" || {
+      echo "RC release must be marked as prerelease"
+      exit 1
+    }
+
+    test "$DRAFT" = "false" || {
+      echo "RC release must be published, not draft"
+      exit 1
+    }
+
+    echo "RC release verification PASS"
 
       - name: Download exact RC package
         shell: bash
