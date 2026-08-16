@@ -1,4 +1,4 @@
-name: TACO RC Update Validation
+name: TACO V6.11 Automated Release Gate
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
         default: "6.11.0"
         type: string
       rc_tag:
-        description: "RC Release tag，例如 rc-6.11.0"
+        description: "已發布的 prerelease tag，例如 rc-6.11.0"
         required: true
         default: "rc-6.11.0"
         type: string
@@ -22,231 +22,91 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  validate:
-    name: Validate unsigned RC package
-    runs-on: ubuntu-latest
-
+  automated-release-gate:
+    name: Package, migration, replacement and rollback gates
+    runs-on: windows-latest
+    timeout-minutes: 30
     env:
       GH_TOKEN: ${{ github.token }}
+      INPUT_VERSION: ${{ inputs.version }}
+      INPUT_RC_TAG: ${{ inputs.rc_tag }}
 
     steps:
-      - name: Validate inputs
-        shell: bash
+      - name: Check out release-gate scripts
+        uses: actions/checkout@v4
+
+      - name: Validate inputs and RC release
+        shell: pwsh
         run: |
-          set -euo pipefail
-
-          [[ "${{ inputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
-            echo "Invalid version"
-            exit 1
-          }
-
-          [[ "${{ inputs.rc_tag }}" =~ ^rc-[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
-            echo "Invalid rc_tag"
-            exit 1
-          }
-
-          EXPECTED_TAG="rc-${{ inputs.version }}"
-
-          test "${{ inputs.rc_tag }}" = "$EXPECTED_TAG" || {
-            echo "rc_tag must be exactly $EXPECTED_TAG"
-            exit 1
-          }
-
-      - name: Verify RC release exists and is prerelease
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          API_URL="https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ inputs.rc_tag }}"
-
-          JSON=$(curl \
-            --fail \
-            --silent \
-            --show-error \
-            --location \
-            -H "Accept: application/vnd.github+json" \
-            "$API_URL")
-
-          PRERELEASE=$(printf '%s' "$JSON" | jq -r '.prerelease')
-          DRAFT=$(printf '%s' "$JSON" | jq -r '.draft')
-          TAG=$(printf '%s' "$JSON" | jq -r '.tag_name')
-
-          test "$TAG" = "${{ inputs.rc_tag }}" || {
-            echo "RC tag mismatch"
-            exit 1
-          }
-
-          test "$PRERELEASE" = "true" || {
-            echo "RC release must be marked as prerelease"
-            exit 1
-          }
-
-          test "$DRAFT" = "false" || {
-            echo "RC release must be published, not draft"
-            exit 1
-          }
-
-          echo "RC release verification PASS"
+          $ErrorActionPreference = 'Stop'
+          if ($env:INPUT_VERSION -notmatch '^\d+\.\d+\.\d+$') { throw 'Invalid version' }
+          if ($env:INPUT_RC_TAG -ne "rc-$env:INPUT_VERSION") { throw "rc_tag must be exactly rc-$env:INPUT_VERSION" }
+          $release = gh api "repos/$env:GITHUB_REPOSITORY/releases/tags/$env:INPUT_RC_TAG" | ConvertFrom-Json
+          if ($release.tag_name -ne $env:INPUT_RC_TAG) { throw 'RC tag mismatch' }
+          if (-not $release.prerelease) { throw 'RC release must be marked prerelease' }
+          if ($release.draft) { throw 'RC release must be published, not draft' }
 
       - name: Download exact RC package
-        shell: bash
+        shell: pwsh
         run: |
-          set -euo pipefail
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Path rc -Force | Out-Null
+          $asset = "TACO_Update_$env:INPUT_VERSION`_win-x64.zip"
+          gh release download $env:INPUT_RC_TAG --repo $env:GITHUB_REPOSITORY --pattern $asset --dir rc --clobber
+          $path = Join-Path $PWD "rc\$asset"
+          if (-not (Test-Path -LiteralPath $path) -or (Get-Item -LiteralPath $path).Length -eq 0) { throw 'RC package download failed' }
+          "ASSET=$asset" >> $env:GITHUB_ENV
 
-          mkdir -p rc
-
-          ASSET="TACO_Update_${{ inputs.version }}_win-x64.zip"
-          DOWNLOAD_URL="https://github.com/${{ github.repository }}/releases/download/${{ inputs.rc_tag }}/$ASSET"
-
-          curl \
-            --fail \
-            --location \
-            --retry 3 \
-            --retry-delay 2 \
-            --output "rc/$ASSET" \
-            "$DOWNLOAD_URL"
-
-          test -s "rc/$ASSET"
-
-          echo "Downloaded:"
-          ls -lh "rc/$ASSET"
-
-          echo "ASSET=$ASSET" >> "$GITHUB_ENV"
-
-      - name: Validate ZIP structure and reject secrets
-        shell: bash
+      - name: Run all four release gates
+        shell: pwsh
         run: |
-          set -euo pipefail
+          $ErrorActionPreference = 'Stop'
+          $report = Join-Path $PWD "rc\RC_VALIDATION_$env:INPUT_VERSION.txt"
+          $checksum = Join-Path $PWD "rc\CHECKSUMS_RC_$env:INPUT_VERSION`_SHA256.txt"
+          ./scripts/Test-TacoReleaseGate.ps1 `
+            -Package (Join-Path $PWD "rc\$env:ASSET") `
+            -Version $env:INPUT_VERSION `
+            -RcTag $env:INPUT_RC_TAG `
+            -WorkDir (Join-Path $env:RUNNER_TEMP 'taco-release-gate') `
+            -ReportPath $report `
+            -ChecksumPath $checksum
+          "REPORT=$([IO.Path]::GetFileName($report))" >> $env:GITHUB_ENV
+          "CHECKSUM=$([IO.Path]::GetFileName($checksum))" >> $env:GITHUB_ENV
 
-          python - <<'PY'
-          import os
-          import re
-          import zipfile
-          from pathlib import PurePosixPath
-
-          path = os.path.join("rc", os.environ["ASSET"])
-
-          banned_names = {
-              "license_private_key.pem",
-              "update_private_key.pem",
-              "licenses.db",
-              ".env",
-              "id_rsa",
-              "id_ed25519",
-          }
-
-          banned_ext = {".pfx", ".p12", ".key"}
-
-          max_uncompressed = 2 * 1024 * 1024 * 1024
-          total = 0
-          exe_count = 0
-
-          with zipfile.ZipFile(path) as zf:
-              bad = zf.testzip()
-
-              if bad:
-                  raise SystemExit(f"ZIP CRC failure: {bad}")
-
-              for info in zf.infolist():
-                  raw = info.filename.replace("\\", "/")
-                  p = PurePosixPath(raw)
-
-                  if p.is_absolute() or ".." in p.parts:
-                      raise SystemExit(f"Unsafe ZIP path: {raw}")
-
-                  name = p.name.lower()
-                  suffix = p.suffix.lower()
-
-                  if name in banned_names or suffix in banned_ext:
-                      raise SystemExit(
-                          f"Forbidden secret/key material in RC: {raw}"
-                      )
-
-                  if re.search(
-                      r"(^|/)(secret|secrets)(/|$)",
-                      raw.lower()
-                  ):
-                      raise SystemExit(
-                          f"Forbidden secret directory in RC: {raw}"
-                      )
-
-                  total += info.file_size
-
-                  if total > max_uncompressed:
-                      raise SystemExit(
-                          "RC uncompressed size exceeds 2 GiB safety limit"
-                      )
-
-                  if suffix == ".exe":
-                      exe_count += 1
-
-              if exe_count == 0:
-                  raise SystemExit(
-                      "RC package contains no Windows executable"
-                  )
-
-          print(
-              f"ZIP validation PASS; "
-              f"executables={exe_count}; "
-              f"uncompressed_bytes={total}"
-          )
-          PY
-
-      - name: Calculate SHA-256 and create validation report
-        shell: bash
+      - name: Publish gate evidence to RC release
+        shell: pwsh
         run: |
-          set -euo pipefail
-
-          HASH=$(sha256sum "rc/$ASSET" | awk '{print $1}')
-          NOW=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
-
-          REPORT="RC_VALIDATION_${{ inputs.version }}.txt"
-          CHECKSUM="CHECKSUMS_RC_${{ inputs.version }}_SHA256.txt"
-
-          printf '%s  %s\n' \
-            "$HASH" \
-            "$ASSET" \
-            > "rc/$CHECKSUM"
-
-          cat > "rc/$REPORT" <<EOF
-          TACO RC Validation
-          version=${{ inputs.version }}
-          rc_tag=${{ inputs.rc_tag }}
-          validated_at_utc=$NOW
-          package=$ASSET
-          sha256=$HASH
-          zip_crc=PASS
-          path_traversal_check=PASS
-          secret_material_check=PASS
-          windows_executable_check=PASS
-          result=PASS
-          EOF
-
-          echo "PACKAGE_SHA256=$HASH" >> "$GITHUB_ENV"
-          echo "REPORT=$REPORT" >> "$GITHUB_ENV"
-          echo "CHECKSUM=$CHECKSUM" >> "$GITHUB_ENV"
-
-      - name: Publish RC validation evidence
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          gh release upload "${{ inputs.rc_tag }}" \
-            "rc/$REPORT" \
-            "rc/$CHECKSUM" \
-            --repo "${{ github.repository }}" \
+          $ErrorActionPreference = 'Stop'
+          gh release upload $env:INPUT_RC_TAG `
+            "rc\$env:REPORT" `
+            "rc\$env:CHECKSUM" `
+            --repo $env:GITHUB_REPOSITORY `
             --clobber
 
+      - name: Upload diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: taco-release-gate-${{ inputs.version }}-${{ github.run_id }}
+          path: |
+            rc/*.txt
+            ${{ runner.temp }}/taco-release-gate/**/update_history.json
+          if-no-files-found: ignore
+          retention-days: 30
+
       - name: Write workflow summary
-        shell: bash
+        if: success()
+        shell: pwsh
         run: |
-          {
-            echo "## TACO RC Validation PASS"
-            echo ""
-            echo "- Version: ${{ inputs.version }}"
-            echo "- RC tag: ${{ inputs.rc_tag }}"
-            echo "- Package: $ASSET"
-            echo "- SHA-256: \`$PACKAGE_SHA256\`"
-            echo "- ZIP CRC / path traversal / secret-material / executable checks: PASS"
-            echo "- Next: manual RC functional testing, then production promotion workflow."
-          } >> "$GITHUB_STEP_SUMMARY"
+          @(
+            '## TACO V6.11 Automated Release Gate PASS'
+            ''
+            "- Version: $env:INPUT_VERSION"
+            "- RC tag: $env:INPUT_RC_TAG"
+            "- Package: $env:ASSET"
+            '- Gate 1 — RC package validation: PASS'
+            '- Gate 2 — Schema 3 → 5 migration and data integrity: PASS'
+            '- Gate 3 — Successful updater replacement: PASS'
+            '- Gate 4 — Forced failure, non-zero exit and byte-for-byte rollback: PASS'
+            '- Production signing: not performed; use the protected promotion workflow after review.'
+          ) | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY -Encoding utf8
