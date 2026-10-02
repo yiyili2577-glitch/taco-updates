@@ -1,0 +1,26 @@
+TACO V6.5.1 Build Fix 3｜License 撤銷同步修正
+
+問題：
+License Server 已回覆 revoked，TACO 也顯示「授權驗證失敗」，
+但本機仍保留舊的 Signed Offline Receipt，因此畫面與高級功能仍維持啟用。
+
+修正：
+1. 伺服器明確回覆 revoked / expired / device_revoked / device_limit / not_found 等權威拒絕時，
+   若該 Token 就是本機目前 DPAPI 快取 Token，立即清除舊 Signed Receipt。
+2. revoked / device_revoked / not_found 同時清除本機 DPAPI Token。
+3. 網路中斷、timeout、429 rate limit 等暫時錯誤不清除 Offline Receipt。
+4. 若使用者輸入的是另一組錯誤 Token，不會破壞目前仍有效的既有 License。
+5. 授權驗證失敗後立即刷新：版本標籤、功能權限、Dashboard。
+6. Token 欄位留白時可自動使用 Windows DPAPI 已保存 Token 重新驗證。
+
+重要：
+此修正版請覆蓋到「目前已經成功建立 License 金鑰與 licenses.db 的 Build Fix 2 專案資料夾」。
+不要重新建立 license_server\secret 私鑰，也不要刪除 licenses.db。
+
+建議覆蓋位置：
+C:\TACO_RELEASE\V6.5.1_buildfix2\taco_v651_buildfix2
+
+覆蓋後重新執行：
+build_tools\build_windows.bat
+
+不需要刪除 C:\ProgramData\TACO，也不需要重新搬資料。

@@ -1,0 +1,717 @@
+[
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/INTEGRATION_GUIDE_V6.8.md",
+    "bytes": 1929,
+    "sha256": "507549a843cdb33efb81f60481229889f4bc9304b8dfd3d444d75b35370fc640"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/README_TACO_V6.9_請先看.md",
+    "bytes": 3021,
+    "sha256": "beec3f4fd6825f361f773b436f15f0f38a9cf572562f186d9e916d32987ab6b5"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/RELEASE_CHECKLIST_V6.9.md",
+    "bytes": 1632,
+    "sha256": "8855c4dd5720efde2b20ed91cb79fb08cce0a35d750a71555da0ebcb126b1790"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/RELEASE_NOTES_V6.9.md",
+    "bytes": 1472,
+    "sha256": "8d2f811589e5306e2e12645980a557debb0e1f79e1fb6689e7dca9fbe8c5610b"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/requirements.txt",
+    "bytes": 21,
+    "sha256": "9acec702bfaf66f1a3a28f873a6123d3bb796f9a8fc7cced7be7f81647070517"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/UPDATE_SYSTEM_V6.9.md",
+    "bytes": 2736,
+    "sha256": "ee4a67fe740474e0746eb9e22d0bc08f67e3ff066d3056b45b917f280a8abb19"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/VALIDATION_V6.9.md",
+    "bytes": 1858,
+    "sha256": "891b98d88ed590fb990e5adf38b7e8f2df90547682797c94b557e75f7ca781ef"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/artifacts/PACKAGE_SHA256_V6.9.txt",
+    "bytes": 95,
+    "sha256": "ba423b5d3bf6f1cd94ebe5953614b89197fc5734b3d1bf11a5f2f01c48347d4a"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/build_tools/package.ps1",
+    "bytes": 2676,
+    "sha256": "05e3e1cea82f330787e821966242be5552df45adf75939c31fb8a9b6d76772cf"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/build_tools/release.py",
+    "bytes": 1782,
+    "sha256": "d3a729600c4b74d6bf4a7b780deb9b6fc15bce2330c3be279fa3d8cf74e20183"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/desktop_app/domain.py",
+    "bytes": 10132,
+    "sha256": "218d649723b32822236eb73a219649535d63bb77c4df6ea47758f43f236db0c9"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/desktop_app/main.py",
+    "bytes": 2220,
+    "sha256": "a614da90b28e0624ca93a927c0d4ee76fe58c56aeb2316d5d121ec3ad7c4d680"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/desktop_app/security.py",
+    "bytes": 2589,
+    "sha256": "5777dc3fd271a657f0c5ee156a748e642214bf18f31021c5b22980aa914ca9b1"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/desktop_app/storage.py",
+    "bytes": 6902,
+    "sha256": "408742e656f059b661121b601baa301915692c17661772d3db3bc29674ded724"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/desktop_app/ui.py",
+    "bytes": 9391,
+    "sha256": "013de8b2732ffb2ec136d8a170adb55f07dc975f0fb675b44149f1d61c7d312d"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/desktop_app/updater.py",
+    "bytes": 12116,
+    "sha256": "634bb4ddebd420db6397a788f79a7238fb00e9239dcdaff52078ab90963ed2f5"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/desktop_app/__init__.py",
+    "bytes": 87,
+    "sha256": "53ea333a77b9d7ba348f9209454046343b7943ba0b68f4884132881afee93c71"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9/tests/test_v69.py",
+    "bytes": 17619,
+    "sha256": "86b0f906a6928cde33648c9b0ab06db1f31246ec0772043c1e02c64176b0ac6e"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/BUILD_FIX_2_說明.txt",
+    "bytes": 1169,
+    "sha256": "ffaabd1475fd82ed67801498dcde0f67c76b2801615fd592263f51a941d5fe3b"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/BUILD_FIX_3_撤銷同步修正.txt",
+    "bytes": 1289,
+    "sha256": "13c6cd895414e95854fb5dcf50703ba900cf125d626534ce7e3e9b146b5ac172"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/CHANGES_TACO_V6.5.1.md",
+    "bytes": 2405,
+    "sha256": "d3624dabe263c5b955c1162778dcadd3e9beda33043b679644d5893be2bb1881"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/README_BUILD_FIX1_請先看.txt",
+    "bytes": 1423,
+    "sha256": "226e5cd2dd63681c798832a16d30ce14be3e507f7da5709dd106c813dfef6962"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/README_TACO_V6.5.1_請先看.txt",
+    "bytes": 4376,
+    "sha256": "7fb2371988c0a1d29823b7cdea5ccfed926b4e8cab8717d57eec76b65453b7c8"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/SECURITY_ARCHITECTURE_V651.md",
+    "bytes": 1199,
+    "sha256": "7f1b148898b7d112b8972f4b9a65b89072f110a08632bfc2eb94372c7f4d3568"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/build_tools/build_setup.bat",
+    "bytes": 3706,
+    "sha256": "13c4dcfc4f5ec751849ba3cc61b86bc440f11166f4daf071492489aed3828b71"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/build_tools/build_windows.bat",
+    "bytes": 5837,
+    "sha256": "31ed010b517e96f12ef70c42496a270a0220b74a78858b6af81505f954072e6b"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/build_tools/prepare_security_keys.bat",
+    "bytes": 679,
+    "sha256": "db207b6eb3c9dbb4a3a06fa5b51af1de464216136513d538aafafe64d6233a0c"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/build_tools/TACO.spec",
+    "bytes": 2043,
+    "sha256": "ee5add10a11fc837a77aaa59d6da0c54737d14a5f34571c0dc37709dc1cb2b6e"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/build_tools/TACOUpdater.spec",
+    "bytes": 876,
+    "sha256": "2b5e338b7711e3169ddd6b56f7ec1c508fa937ced7857f9caf79ec34c8b078e5"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/build_tools/version_info.txt",
+    "bytes": 639,
+    "sha256": "380f7d1aa067ef154f1a5731e1519e20763475376aa5f325300cf7deccb8d9e5"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/main.py",
+    "bytes": 1123,
+    "sha256": "27a2c72bf8af90b7dfa180793b2ed7297cc16677d0d43ca580944c1c9a75a674"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/requirements-desktop.txt",
+    "bytes": 110,
+    "sha256": "511425cd558ca926000fe5099defddf000e00f65f7ddb6e1ccf46d0b109d0fb9"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/updater.py",
+    "bytes": 5290,
+    "sha256": "8191d53375491ccce3c047d61e8f19c8b7d7e82a01fb22dda0371f2edf73be0c"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/data_template/schema.json",
+    "bytes": 25,
+    "sha256": "48b7c62e54a6ea0e1a45583d7467a4bdbef025142b08732a19b09434145b01e0"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/app_paths.py",
+    "bytes": 3394,
+    "sha256": "3d78c6e0c02bc133dbc52c3e6b7a4f0816b80852b0cac1e713ff94ad34f26496"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/audit_log_service.py",
+    "bytes": 10166,
+    "sha256": "ad760399aa7adfd3724a0a011b192b7831d696cfb51bde05722d84f0ee86d285"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/bootstrap_service.py",
+    "bytes": 6066,
+    "sha256": "a02183fc69afffabbe9d9c0e5db60f2e4f48e0c85b87642a75b9616143d07733"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/build_config.py",
+    "bytes": 845,
+    "sha256": "ea692003484a8b14f91b729f8cdc8267264ad6f310bc741852f3572c98b638d9"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/container_planning_service.py",
+    "bytes": 5747,
+    "sha256": "e16b12efc8e1922c6340e608c790db01f22aefe633c4abd9c07350407ef4d661"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/customer_demand_import_service.py",
+    "bytes": 32506,
+    "sha256": "65a1e131e4d5365661ed3cfc89a958a5b475a7148647fad074e0d147e33f69f6"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/customer_demand_pdf_safe_service.py",
+    "bytes": 2960,
+    "sha256": "9d4eebc4ab09489a69023d894d3c2eeddf5f68a77a0662c0829dda3e7306a60b"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/customer_demand_service.py",
+    "bytes": 78007,
+    "sha256": "5be5f47f815577c99ae330d7a93dc7fb0cd614de0ebc2c7e3e77b08855e9f651"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/customer_demand_store_service.py",
+    "bytes": 4864,
+    "sha256": "a35f20317dd3b2b4888718b801d45b7dd465660e24e4ed1ac238bcb816f35032"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/dashboard_data_service.py",
+    "bytes": 18027,
+    "sha256": "7928c2d044ad81f22f48c254b481f8efda8f34d812efb539745e2b62206c7199"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/data_maintenance_service.py",
+    "bytes": 11210,
+    "sha256": "48827118db90336c322d95f51a5a20a8dd106c7f2fb9b16c9945ae112e8859f5"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/data_migration_service.py",
+    "bytes": 3396,
+    "sha256": "8473ebf6891fc5875664b7cfc2a658c6bb58f7bd04dcc2ef3d7efc19d548f062"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/erp_sql_connector_service.py",
+    "bytes": 17593,
+    "sha256": "71cd213a953c7152b08babacac29a4162e3fa350f83b774e07067c727d94d7d1"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/excel_service.py",
+    "bytes": 8030,
+    "sha256": "6a04876cc8259ec02ceb084b1f23b8f08a6a305933d20ed24a47c7cb31810046"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/feature_gate_service.py",
+    "bytes": 4022,
+    "sha256": "2893afe91e14f8d913bd5ad0a0a7da9c78e6e3dec88f48f838f137cead779043"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/financial_service.py",
+    "bytes": 109586,
+    "sha256": "8ffbae695c3db5998102fe4b38cb48f47442ad530f8ee52c2c5cb05455f3dfff"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/fulfillment_service.py",
+    "bytes": 6794,
+    "sha256": "986814e1d133b0ad97e30dde233db952633df3d638305888f93909b282d02846"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/help_content_service.py",
+    "bytes": 19767,
+    "sha256": "1fbf2b0014c1305ccd038409037147c698f9f5db7892a503ca184131d1725f40"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/import_profile_service.py",
+    "bytes": 5365,
+    "sha256": "5f42a6f531db238e8977ef090b716083011969052c3f1c386612640148bb3809"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/integration_db_service.py",
+    "bytes": 14676,
+    "sha256": "c686596a68d1712e6259e69de5026ffbee70dcd2a07c795cabe109c12c3cf687"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/inventory_service.py",
+    "bytes": 7989,
+    "sha256": "547d7272e6929e0c2991a2edf72d7fc0131efedbcb47458476c12837164cf977"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/mapping_service.py",
+    "bytes": 961,
+    "sha256": "6ebe1d23ee26d86780df4234a00e5ee2e117aa07b807e1e591c4b816bdebc245"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/notification_service.py",
+    "bytes": 3353,
+    "sha256": "744b0dba5c7cdb43c3fa1831490c75a239750f93baa516418e0f4d25a217aaa8"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/product_alias_service.py",
+    "bytes": 16296,
+    "sha256": "ad8173b05d09455e7115dfd72b3423fc923c070d561ceb2f5c8deaf60895517c"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/product_excel_service.py",
+    "bytes": 11562,
+    "sha256": "9b1c26002624253512b28e37a1ea8766fcfde1a7f7d2f3d587a940c7be938f87"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/product_master_service.py",
+    "bytes": 19192,
+    "sha256": "d13b8db27dcb856536a663bfc75527dff907a41c82ed0c34ee051530665f13b4"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/purchase_service.py",
+    "bytes": 15578,
+    "sha256": "a491ffd833655f4baa38840191abd43b0f40fec262c3ca4959b683f726e064cc"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/role_permission_service.py",
+    "bytes": 2708,
+    "sha256": "4beb8cca69944bf49c2ed83b16d73399dff925704f53c97636e4057bc6fc7ef7"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/role_rules.py",
+    "bytes": 2467,
+    "sha256": "44f8f7f6c094c2172ef598bfcbcd58cea67ff25075da2e01bec4b30b4581ff54"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/safe_storage.py",
+    "bytes": 6626,
+    "sha256": "b2a7adefda7bfcc1f65bfc9b2d47f1a2fc829b775ff0d3064d47f5eec02ef6e0"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/scanner_service.py",
+    "bytes": 4416,
+    "sha256": "1060c60405ff6e2f7a0b38cd4f5d5133c8be6458dd59ee927db79b9060ecec84"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/scan_receipt_service.py",
+    "bytes": 8245,
+    "sha256": "6082aa90a598b35cfa14ba08b1e5ebb08c6874838fb9912aab29ed45e5daf3e0"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/secret_store.py",
+    "bytes": 4232,
+    "sha256": "f67dbf8bab3c7d8ddc08a3a526431de23c129b1d02cd6fb7cc4b3ddb52975dee"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/security.py",
+    "bytes": 3861,
+    "sha256": "44d5fca8db0aacca2f3c92a3f45d1113d965912dcd1aa0d5563e2d3766464cdd"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/signature_utils.py",
+    "bytes": 826,
+    "sha256": "00e6811202b760b4dbefbdf1b77cdab89401880bf0072ba169ec3f93158264ef"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/supplier_service.py",
+    "bytes": 1720,
+    "sha256": "135ea89a146851348625121a656a8a4fb372d296de5917f52acc80dcca155a5b"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/system_settings_service.py",
+    "bytes": 13047,
+    "sha256": "27768d543e9efea5f8e7d0f8ab85d23eefcd8ab19b5d028c5a92438bede3ea23"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/table_export_service.py",
+    "bytes": 10673,
+    "sha256": "99e8aa11e82751d48bc4e49cf68ce53cd09e12959e08bb5bfb999fcb21da42ae"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/update_service.py",
+    "bytes": 9845,
+    "sha256": "7d6214b0ac20a2a3a6810eca7e9f37dabc11a9867976bedc77b91351c65c6a11"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/user_auth_service.py",
+    "bytes": 11910,
+    "sha256": "aa14657acb4a8dea3e23719461fd984f1122237365df4a71973b4460b42a8e34"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/vendor_master_service.py",
+    "bytes": 16888,
+    "sha256": "eb7300ff365a70325086cab9605785d74de078564b98b7abd34ae2c7c45eadc1"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/versioning.py",
+    "bytes": 249,
+    "sha256": "d981a7ca8139fe09a79eb735b77d78d1c5c6fc16fde72642058769b692d2e696"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/warehouse_service.py",
+    "bytes": 3679,
+    "sha256": "72df86cc2d5ec8e82385de9365e7e0e1b61a7781ca4a9f03be8b2932aeec6c5f"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/warehouse_transfer_service.py",
+    "bytes": 7291,
+    "sha256": "0f86e704db4de5a36eecda5b23f4f56cd52ebb40a70c2e7242218c81b5f5341b"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/services/__init__.py",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_purchase_service.py",
+    "bytes": 7031,
+    "sha256": "d574bf8ffc9409c37694df9d2d968cd969451e2dfa6a8b40e2b90410d803d714"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_safe_storage.py",
+    "bytes": 3739,
+    "sha256": "daede7ed56fcb99c7ed58fab9e55e708266a223adc80cd6b51936e774667805d"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_security.py",
+    "bytes": 5157,
+    "sha256": "69f90e4f2a14b962efb95ece6731e55fb24d06265b7114a63255ecffb5b42cff"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_v521_security.py",
+    "bytes": 3366,
+    "sha256": "f24c9beabb97555f64a3c89c08056b442571ad2789e47a94dc4055beac06e4aa"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_v60_finance.py",
+    "bytes": 3329,
+    "sha256": "942c95c87e846f16ad3475a1775501d6fb68f7af2015c91a18d70c3794630d0d"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_v61_finance.py",
+    "bytes": 4141,
+    "sha256": "07c5a83aa00551d9fa75056ecb76997f303550b2eb17afb3e75635c2a69df470"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_v62_finance.py",
+    "bytes": 2891,
+    "sha256": "ec37395a6253a93e5f8527681ad9ee93672562eaaca065477b0eb6fc9881685d"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_v63_finance.py",
+    "bytes": 5710,
+    "sha256": "6f769760b2aef130a1ab071fc0edaa24512a3e1098dcc20416f9128a898cf2df"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_v64_finance.py",
+    "bytes": 4194,
+    "sha256": "7bfd78cab50cc92b5e59cd4cec4d820fec2b19fd485823ee1d618d3b636765d2"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_v651_runtime_security.py",
+    "bytes": 15347,
+    "sha256": "2370670fdaad146f1a3597990a9dc083566531047b5f5098bde4dd5468c0fc9c"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_v65_finance.py",
+    "bytes": 5661,
+    "sha256": "87b66fd104071ebbcb5352b6f80cfbdf01c71f0b54486f96034af455694b842f"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_v65_hotfix_legacy_data.py",
+    "bytes": 1172,
+    "sha256": "0b2d930312a718806982ff6cdf72f4f31c3420f44a82c66b5fc8f8f90d23768c"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_v66_integration.py",
+    "bytes": 2025,
+    "sha256": "f42bbac7c2eea42270dfac282ce2ffc94848f58b6ee67b1a2382f8d51bbd6297"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_v66_schema_migration.py",
+    "bytes": 2289,
+    "sha256": "331080d829a68caaf7d100882914dc3f2a3bd9d6825286c5a4cb701a40e4df87"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_v68_ui.py",
+    "bytes": 2763,
+    "sha256": "2d2fb2de1f6d5d5bd14cf64998353b1439fa613005000906adc47bb74a5f5b10"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/test_v69_scan_update.py",
+    "bytes": 7080,
+    "sha256": "bdb1f9cb1a4d922b7436e9d0c23bd08b4f338a2eebdcb09dc1c72b6c86b17abb"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/tests/__init__.py",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/audit_center_page.py",
+    "bytes": 9260,
+    "sha256": "024d35f7f6689e874a510c9f58147c93c5759dd747964e6f64dcbe7d82dee376"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/column_visibility_dialog.py",
+    "bytes": 2506,
+    "sha256": "61ba4c38b347c87bddb553d47bbe39ee741d06804b2d6023af2ab34d04302dcc"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/container_plan_dialog.py",
+    "bytes": 6925,
+    "sha256": "f4fa203e3aec259b833a90c804a01ea5e7f2b19fd2da8dd911e88b5cb9317de2"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/customer_demand_page.py",
+    "bytes": 54369,
+    "sha256": "9e87845e4d44219e9c2853119ba88de05643dee556b49512f1af78492f909ceb"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/dashboard_page.py",
+    "bytes": 27347,
+    "sha256": "ed616ea0173468bbade31d21246d8e222e71572a6136a74535f3e650e4d92f9a"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/finance_page.py",
+    "bytes": 83511,
+    "sha256": "6889d751bcc9e9114c624fe75fa6ab63a6936a4d987d51d3a96c5830862453d7"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/fulfillment_dialog.py",
+    "bytes": 6585,
+    "sha256": "ddb20d28178da95df1cbb34e609aa10b19b4a8c52c63e7c77e7e0d574ff0f4f6"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/help_center_page.py",
+    "bytes": 3130,
+    "sha256": "a3d6d591b617cd3a14c62d41a646adcf18eb1191747b56a0dc417a759d349863"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/import_profile_dialog.py",
+    "bytes": 4140,
+    "sha256": "84fed3405d0392d2a02ca27e60e6973303bd2ffbe7404fb93f1723cd0d106ac0"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/integration_center_page.py",
+    "bytes": 15321,
+    "sha256": "4abe47fe39ddbed175c717bd8126a8f7ea471ea124a1586b35476ca1e659bcc0"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/inventory_page.py",
+    "bytes": 15255,
+    "sha256": "248d18f73de6d9c286a1cbda4a6461ec0e9ef7f2808e808069dacf13e18b2c8b"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/login_dialog.py",
+    "bytes": 4882,
+    "sha256": "59ea3ab2f296a11cddfb106bf13cbe7a4b613525fdfcbaf2de8875bddb3dd22d"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/main_window.py",
+    "bytes": 15556,
+    "sha256": "ec9cd55a35d53b19ef3e960b1f6f3605ccdacbc772f3362cd9737140cc9303ee"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/notification_center_dialog.py",
+    "bytes": 2078,
+    "sha256": "ea8cb176895cfd11cb9abf808889b1b87127dd164289f6197d6466ce25d1451e"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/page_header.py",
+    "bytes": 708,
+    "sha256": "5bac3535d45f8915ff50b98443de7d258f17eee3f8b85cfe3bc265f832a4d9b6"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/purchase_page.py",
+    "bytes": 39054,
+    "sha256": "0edb7c22e48c6fcf8de3d6ed9d219739f5b715edc6297575c059ab15b506242d"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/responsive_action_bar.py",
+    "bytes": 4031,
+    "sha256": "dbd066864906f7079b3ce7f35a05abfbd290372672078779ad16699d98c1d2cb"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/sql_import_dialog.py",
+    "bytes": 5884,
+    "sha256": "a5df33d2aaddd3b359cf87be8cc496a529aaadea22932e08899fc64b8ce11b2c"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/supplier_page.py",
+    "bytes": 62260,
+    "sha256": "75f13ddd7f6717acd03ebf6e229745d4aa3990710e8eba03ad1014e29cebd727"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/supplier_tools_installer.py",
+    "bytes": 5375,
+    "sha256": "19cad18f57cb740608b3b2056463a6e550ca0518ecb3b1c25d1f7c08aa1b9dc5"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/system_settings_page.py",
+    "bytes": 60186,
+    "sha256": "42e64d74ef1e8d37993ccf27328b7c2d52032be45be6e45a9f4d11224b656727"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/two_row_tab_widget.py",
+    "bytes": 2691,
+    "sha256": "3b4b8229cd14d0455ac36051b8ca0f5ecf634a4f43b617e0882cff225926b63b"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/ui_theme.py",
+    "bytes": 5123,
+    "sha256": "4fdc78cfb28548a9ce5eecd7b1332921db37a8f6113000f352c28b5ea4a018f1"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/warehouse_transfer_dialog.py",
+    "bytes": 4628,
+    "sha256": "d82d3ff7f40e54dc8fd9557462026ba7b34f021a0ffd19c3a3da24997f9520ff"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/desktop_app/ui/__init__.py",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/installer/TACO_V651.iss",
+    "bytes": 2425,
+    "sha256": "94ba589aea75e37e40dece8849964abad2a4b069402347bd8ef05ca64d1554fe"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/installer/TACO_V660.iss",
+    "bytes": 2425,
+    "sha256": "94ba589aea75e37e40dece8849964abad2a4b069402347bd8ef05ca64d1554fe"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/installer/TACO_V680.iss",
+    "bytes": 2425,
+    "sha256": "0bee6e6ee99913ff7cf6aea249a2d8c74d8a11b5864e6ca99f92f7ac84189ecd"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/installer/TACO_V690.iss",
+    "bytes": 2266,
+    "sha256": "2ee5f499e1fa99528cbcd5be51cb0f9b75d090233b6ce096676c75f950c64d4b"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/license_server/app.py",
+    "bytes": 2880,
+    "sha256": "e4ee793395e821c441b7e64593d0b2ed1adb9a20a43d3705b8a5445a1c8487f6"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/license_server/close_firewall_lan_test.bat",
+    "bytes": 239,
+    "sha256": "db6b548cdc5615fe222bc06eafb6bf314f64609d4ab6ab5c6032d2b072e50034"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/license_server/close_firewall_lan_test.ps1",
+    "bytes": 208,
+    "sha256": "3f7d4e806e1a01628ceb80dd0baa00742cc2cc2c54ae11c8bbd655034d54f0fa"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/license_server/generate_signing_keys.py",
+    "bytes": 1605,
+    "sha256": "667e90bf664322eb7c92395e1562e6309e847ebdfc9bb05143afbc557e133b1d"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/license_server/issue_license_cli.py",
+    "bytes": 2195,
+    "sha256": "3cbc78b7b542350a8a39b542ca852f94b2cd0935c9de049e81b926cdceb08fbb"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/license_server/license_store.py",
+    "bytes": 11298,
+    "sha256": "81ff3160054846ed4a87a9b942abcd27331b02cc7c52768b18485b0c14cbdc94"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/license_server/open_firewall_lan_test.bat",
+    "bytes": 386,
+    "sha256": "8397d834214c0e029f1ab35b22f8a76404076b7b1c0d08fb38effbe041d77c29"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/license_server/open_firewall_lan_test.ps1",
+    "bytes": 527,
+    "sha256": "fdfc2d948e59b8f994ed235a8502ba31b866c29e1306321e470916345d8ab56b"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/license_server/README.md",
+    "bytes": 3155,
+    "sha256": "c1f2898291170e8e549da98931911b4d7e6695a6c0eaeb13f96f900e5fbed584"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/license_server/requirements.txt",
+    "bytes": 45,
+    "sha256": "2efc98af1999054bb41bfcc13a1166faa7c53bedfccb1821d879b664e9c32a3e"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/license_server/signing.py",
+    "bytes": 1085,
+    "sha256": "772b141d1bfc4d808b539908b972d2630761ad666ea0a1181820ce45521d2418"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/license_server/start_local_test.bat",
+    "bytes": 489,
+    "sha256": "5d5b2bb8be09432f01774802da6fb895999d0beb608a1ca771aae1b97f83bf71"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/license_server/tests/test_license_server.py",
+    "bytes": 4606,
+    "sha256": "1de267d4a382e00f645b926579f5c4ed0c5576471e233403f4e7a071dc0e8fd6"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/license_server/tests/__init__.py",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/update_server/build_signed_manifest.py",
+    "bytes": 2308,
+    "sha256": "8c630bee93bb6c9f2b4c53816b348582ddcf5b2f40b5952012dd2a586d4643e4"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/update_server/generate_update_keys.py",
+    "bytes": 1283,
+    "sha256": "84eeefd83fe9c5178ac1bdb478cbc28eee1b288a322acd7a3d3d75f7dfb52054"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/update_server/package_app_update.py",
+    "bytes": 1097,
+    "sha256": "ec7da071caf09cce2e237ca075489855a52f4f52b210fcb0897f27ed8b04d7f0"
+  },
+  {
+    "path": "codex/source-snapshot/TACO_V6.9_FROM_V6.8/update_server/README.md",
+    "bytes": 644,
+    "sha256": "c9975f84766402ae29abb6fdf7324f288f51b3e00f0e0043016cd1d514d98a5d"
+  }
+]

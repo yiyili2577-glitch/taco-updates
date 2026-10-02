@@ -1,0 +1,18 @@
+TACO V6.5.1 Build Fix 2
+========================
+
+修正 Windows 正式 EXE 首次從舊 Erp_app/data 移轉後，Dashboard 右上角仍可能顯示「高級版・開發測試」，但左側授權狀態已是「一般版・未授權」的視覺/狀態不一致。
+
+原因：
+- V6.5.1 正式授權核心已正確 fail closed；功能卡也已被鎖住。
+- 但 Dashboard 仍直接讀取舊 system_settings.json 裡的 tier/development_mode 顯示文字。
+- 舊資料可能保存 advanced + development_mode=True，因此造成錯誤標籤。
+
+本修正版：
+1. SystemSettingsService.load() 在 PROD 一律以 Ed25519 Signed Receipt 為授權真相來源。
+2. 沒有有效 Receipt 時一律顯示/判定「一般版・未授權」。
+3. Dashboard 改用 effective 授權狀態，不直接相信舊 JSON。
+4. Bootstrap 首次移轉時會清理舊 development_mode/advanced metadata；舊 Token 如存在仍搬入 Windows DPAPI，等待正式伺服器重新驗證。
+5. 不影響已移轉的產品、庫存、客需、財務、帳號等業務資料。
+
+使用：請用此完整資料夾重新執行 build_tools\\build_windows.bat，產生新的 dist\\TACO\\TACO.exe。
